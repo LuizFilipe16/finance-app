@@ -1,26 +1,31 @@
 {
-  "name": "finance-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LuizFilipe16/finance-app.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LuizFilipe16/finance-app/issues"
-  },
-  "homepage": "https://github.com/LuizFilipe16/finance-app#readme",
-  "devDependencies": {
-    "@eslint/js": "^9.34.0",
-    "eslint": "^8.57.1",
-    "globals": "^16.3.0"
-  }
+    "name": "finance-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "postinstall": "npx husky install"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LuizFilipe16/finance-app.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/LuizFilipe16/finance-app/issues"
+    },
+    "homepage": "https://github.com/LuizFilipe16/finance-app#readme",
+    "devDependencies": {
+        "@eslint/js": "^9.34.0",
+        "eslint": "^8.57.1",
+        "globals": "^16.3.0"
+    },
+    "dependencies": {
+        "husky": "^8.0.3",
+        "lint-staged": "^16.1.5"
+    }
 }
