@@ -11,4 +11,4 @@ app.get('/', async (req, res) => {
     res.send(JSON.stringify(results));
 });
 
-app.listen(3000, () => console.log('listening on port 3000'));
+app.listen(process.env.PORT, () => console.log('listening on port 3000'));
