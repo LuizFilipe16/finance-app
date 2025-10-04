@@ -1,25 +1,26 @@
-
-import { badRequest, serverError, ok } from './helpers/http.js';
-import { UpdateUserUseCase } from '../use-cases/update-user.js';
+import { UpdateUserUseCase } from '../use-cases/index.js';
 import { EmailAlreadyInUseError } from '../errors/user.js';
 import {
     checkIfEmailIsValid,
     checkIfIdIsValid,
     checkIfPasswordIsValid,
     emailIsAlreadyInUseResponse,
-    InvalidIdResponse,
+    invalidIdResponse,
     invalidPasswordResponse,
-} from './helpers/user.js';
+    badRequest,
+    ok,
+    serverError,
+} from './helpers/index.js';
 
 export class UpdateUserController {
     async execute(httpRequest) {
         try {
             const userId = httpRequest.params.userId;
 
-            const isIdValid = checkIfIdIsValid(userId)
+            const isIdValid = checkIfIdIsValid(userId);
 
             if (!isIdValid) {
-                return InvalidIdResponse();
+                return invalidIdResponse();
             }
 
             const params = httpRequest.body;
@@ -31,14 +32,13 @@ export class UpdateUserController {
                 'password',
             ];
 
-            // Verificar se alguma propriedade que a gente recebe não está presente na lista acima
-            const somefieldIsNotAllowed = Object.keys(params).some(
+            const someFieldIsNotAllowed = Object.keys(params).some(
                 (field) => !allowedFields.includes(field),
             );
 
-            if (somefieldIsNotAllowed) {
+            if (someFieldIsNotAllowed) {
                 return badRequest({
-                    message: 'Some provided field is not allowed',
+                    message: 'Some provided field is not allowed.',
                 });
             }
 
@@ -48,23 +48,21 @@ export class UpdateUserController {
                 if (!passwordIsValid) {
                     return invalidPasswordResponse();
                 }
+            }
 
             if (params.email) {
-                const emailIsValid = checkIfEmailIsValid();
+                const emailIsValid = checkIfEmailIsValid(params.email);
 
                 if (!emailIsValid) {
-                    return emailIsAlreadyInUseResponse(params.email);
+                    return emailIsAlreadyInUseResponse();
                 }
             }
 
             const updateUserUseCase = new UpdateUserUseCase();
 
-            const updateUser = await updateUserUseCase.execute(
-                userId,
-                params,
-            );
+            const updatedUser = await updateUserUseCase.execute(userId, params);
 
-            return ok(updateUser);
+            return ok(updatedUser);
         } catch (error) {
             if (error instanceof EmailAlreadyInUseError) {
                 return badRequest({ message: error.message });

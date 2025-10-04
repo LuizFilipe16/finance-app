@@ -11,12 +11,12 @@ export const emailIsAlreadyInUseResponse = () =>
         message: 'Invalid e-mail. Please provide a valid one',
     });
 
-export const InvalidIdResponse = () =>
+export const invalidIdResponse = () =>
     badRequest({
         message: 'Some provided field is not allowed',
     });
 
-export const checkIfPasswordIsValid = (password) => password.lenght >= 6;
+export const checkIfPasswordIsValid = (password) => password.length >= 6;
 
 export const checkIfEmailIsValid = (email) => validator.isEmail(email);
 
