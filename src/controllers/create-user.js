@@ -1,4 +1,3 @@
-import { CreateUserUseCase } from '../use-cases/index.js';
 import { EmailAlreadyInUseError } from '../errors/user.js';
 import {
     checkIfEmailIsValid,
@@ -11,9 +10,14 @@ import {
 } from './helpers/index.js';
 
 export class CreateUserController {
+    constructor(createUserUseCase) {
+        this.createUserUseCase = createUserUseCase;
+    }
+
     async execute(httpRequest) {
         try {
             const params = httpRequest.body;
+
             // Validar a requisição (campos obrigatórios, tamanho de senha e e-mail)
             const requiredFields = [
                 'first_name',
@@ -30,7 +34,7 @@ export class CreateUserController {
 
             const passwordIsValid = checkIfPasswordIsValid(params.password);
 
-            if (passwordIsValid) {
+            if (!passwordIsValid) {
                 return invalidPasswordResponse();
             }
 
@@ -41,8 +45,8 @@ export class CreateUserController {
             }
 
             // Chamar o use case com os dados
-            const createUserUseCase = new CreateUserUseCase();
-            const createdUser = await createUserUseCase.execute(params);
+
+            const createdUser = await this.createUserUseCase.execute(params);
 
             return created(createdUser);
         } catch (error) {
